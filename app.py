@@ -400,6 +400,7 @@ st.markdown(
             radial-gradient(230px 150px at 100% 0%, rgba(70, 137, 255, 0.36), transparent 70%),
             linear-gradient(145deg, #0C2248, #143B7E);
         border-color: rgba(20, 54, 116, 0.2);
+        box-shadow: 0 14px 34px rgba(12, 34, 72, 0.26);
         color: white;
     }
     .verdict-card::before { background: linear-gradient(90deg, #53E2B1, #8DF3D3); }
@@ -428,6 +429,7 @@ st.markdown(
         font-size: 12px;
         line-height: 1.55;
         min-height: 37px;
+        overflow-wrap: anywhere;
     }
     .verdict-footer {
         display: flex;
@@ -997,7 +999,7 @@ def _verdict_card(comparison: Comparison) -> str:
     tie = difference < 0.5
 
     if tie and comparison.project_a.npv > 0:
-        card_class = "verdict-card tie"
+        card_class = "kpi-card verdict-card tie"
         badge = '<span class="tag dark">Tie</span>'
         headline = "Equal VAN"
         copy = (
@@ -1010,7 +1012,7 @@ def _verdict_card(comparison: Comparison) -> str:
     elif comparison.recommended is not None:
         winner = comparison.recommended
         other = comparison.lower_npv
-        card_class = "verdict-card"
+        card_class = "kpi-card verdict-card"
         badge = '<span class="tag dark">Recommended</span>'
         headline = winner.project.name
         copy = (
@@ -1020,7 +1022,7 @@ def _verdict_card(comparison: Comparison) -> str:
         cross = _percent(comparison.crossover_rate) if comparison.crossover_rate is not None else "n/a"
         footer = f"<span>Ranking flips at</span><b>{cross}</b>"
     else:
-        card_class = "verdict-card no-go"
+        card_class = "kpi-card verdict-card no-go"
         badge = '<span class="tag danger">No-go</span>'
         headline = "Neither project"
         copy = (
